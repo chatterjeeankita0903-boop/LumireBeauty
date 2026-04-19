@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { Heart, ChevronLeft } from "lucide-react";
-import { getProduct, categoryGradient } from "@/data/products";
+import { getProduct, categoryGradient, type Product } from "@/data/products";
 import { useReviews } from "@/hooks/useReviews";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useChatbot } from "@/components/ChatbotContext";
@@ -41,7 +41,8 @@ export const Route = createFileRoute("/products/$id")({
 });
 
 function ProductPage() {
-  const { product } = Route.useLoaderData();
+  const data = Route.useLoaderData() as { product: Product };
+  const { product } = data;
   const { avgByProduct } = useReviews();
   const { has, toggle } = useWishlist();
   const { openWithReview } = useChatbot();
