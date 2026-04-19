@@ -3,15 +3,16 @@ import { Send } from "lucide-react";
 import { products } from "@/data/products";
 import { MessageBubble } from "./MessageBubble";
 import { TypingIndicator } from "./TypingIndicator";
+import { N8N_WEBHOOK_URL } from "@/config/api";
 
 interface Msg {
   role: "user" | "assistant";
   text: string;
 }
 
-function answer(input: string): string {
+// Returns a local answer if the rule-based system can handle it, else null.
+function localAnswer(input: string): string | null {
   const lower = input.toLowerCase();
-  // Product match
   const match = products.find((p) => lower.includes(p.name.toLowerCase()));
   if (match) {
     const claims = match.claims.join(", ");
@@ -30,7 +31,33 @@ function answer(input: string): string {
   if (lower.includes("routine")) {
     return "A simple Lumière 3-step routine:\n\n1. DermaClear Salicylic Acid Wash — cleanse\n2. GlowLab Vitamin C Serum — brighten (AM) or RetinolRich Night Cream (PM)\n3. AquaPlump Hyaluronic Serum — hydrate & seal\n\nFinish with SPF in the morning.";
   }
-  return "Ask us about any of our 17 products or your skincare routine.";
+  return null;
+}
+
+async function askWebhook(query: string): Promise<string> {
+  try {
+    const res = await fetch(N8N_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "customer_query", query }),
+    });
+    if (!res.ok) throw new Error("bad response");
+    const text = await res.text();
+    let answer = "";
+    try {
+      const data = JSON.parse(text);
+      if (Array.isArray(data)) {
+        answer = data[0]?.answer ?? data[0]?.output ?? "";
+      } else {
+        answer = data.answer ?? data.output ?? data.reply ?? "";
+      }
+    } catch {
+      answer = text;
+    }
+    return answer?.trim() || "I'm not sure about that just yet — try asking about one of our 17 products or your routine.";
+  } catch {
+    return "Sorry, I couldn't reach the assistant right now. Please try again in a moment.";
+  }
 }
 
 export function BeautyHelpTab() {
