@@ -72,16 +72,23 @@ export function BeautyHelpTab() {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [msgs, typing]);
 
-  const send = () => {
+  const send = async () => {
     const text = input.trim();
     if (!text) return;
     setMsgs((m) => [...m, { role: "user", text }]);
     setInput("");
     setTyping(true);
-    setTimeout(() => {
-      setMsgs((m) => [...m, { role: "assistant", text: answer(text) }]);
-      setTyping(false);
-    }, 700);
+    const local = localAnswer(text);
+    if (local) {
+      setTimeout(() => {
+        setMsgs((m) => [...m, { role: "assistant", text: local }]);
+        setTyping(false);
+      }, 600);
+      return;
+    }
+    const reply = await askWebhook(text);
+    setMsgs((m) => [...m, { role: "assistant", text: reply }]);
+    setTyping(false);
   };
 
   return (
