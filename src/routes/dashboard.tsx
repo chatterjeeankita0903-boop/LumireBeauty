@@ -31,6 +31,24 @@ function DashboardPage() {
   const [category, setCategory] = useState("");
   const [rating, setRating] = useState("");
   const [tick, setTick] = useState(0);
+  const [sendingReport, setSendingReport] = useState(false);
+
+  const sendReport = async () => {
+    setSendingReport(true);
+    try {
+      const res = await fetch(N8N_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "send_analysis" }),
+      });
+      if (!res.ok) throw new Error("bad response");
+      toast.success("Report sent to owner ✨");
+    } catch {
+      toast.error("Couldn't send report. Please try again.");
+    } finally {
+      setSendingReport(false);
+    }
+  };
 
   // Tick counter for "synced X seconds ago"
   useEffect(() => {
