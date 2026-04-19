@@ -93,6 +93,13 @@ function DashboardPage() {
           >
             Refresh
           </button>
+          <button
+            onClick={sendReport}
+            disabled={sendingReport}
+            className="px-4 py-2 bg-[var(--burgundy)] text-[var(--ivory)] text-xs tracking-widest uppercase hover:bg-[var(--burgundy-deep)] transition disabled:opacity-50"
+          >
+            {sendingReport ? "Sending…" : "Email Analysis Report"}
+          </button>
           <ExportCsvButton reviews={filtered} />
         </div>
       </div>
