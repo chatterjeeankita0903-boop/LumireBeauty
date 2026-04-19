@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { useReviews } from "@/hooks/useReviews";
 import { MetricCards } from "@/components/dashboard/MetricCards";
 import { FiltersBar } from "@/components/dashboard/FiltersBar";
 import { ReviewsTable } from "@/components/dashboard/ReviewsTable";
 import { ChartsSection } from "@/components/dashboard/ChartsSection";
 import { ExportCsvButton } from "@/components/dashboard/ExportCsvButton";
+import { N8N_WEBHOOK_URL } from "@/config/api";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: () => {
@@ -29,6 +31,24 @@ function DashboardPage() {
   const [category, setCategory] = useState("");
   const [rating, setRating] = useState("");
   const [tick, setTick] = useState(0);
+  const [sendingReport, setSendingReport] = useState(false);
+
+  const sendReport = async () => {
+    setSendingReport(true);
+    try {
+      const res = await fetch(N8N_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "send_analysis" }),
+      });
+      if (!res.ok) throw new Error("bad response");
+      toast.success("Report sent to owner ✨");
+    } catch {
+      toast.error("Couldn't send report. Please try again.");
+    } finally {
+      setSendingReport(false);
+    }
+  };
 
   // Tick counter for "synced X seconds ago"
   useEffect(() => {
@@ -72,6 +92,13 @@ function DashboardPage() {
             className="px-4 py-2 border border-[var(--champagne)] text-xs tracking-widest uppercase hover:border-[var(--burgundy)] hover:text-[var(--burgundy)] transition"
           >
             Refresh
+          </button>
+          <button
+            onClick={sendReport}
+            disabled={sendingReport}
+            className="px-4 py-2 bg-[var(--burgundy)] text-[var(--ivory)] text-xs tracking-widest uppercase hover:bg-[var(--burgundy-deep)] transition disabled:opacity-50"
+          >
+            {sendingReport ? "Sending…" : "Email Analysis Report"}
           </button>
           <ExportCsvButton reviews={filtered} />
         </div>
