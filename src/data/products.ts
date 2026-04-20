@@ -60,3 +60,19 @@ export const categoryGradient = (cat: Category): string => {
     case "Fragrance": return "gradient-fragrance";
   }
 };
+
+import skincareImg from "@/assets/cat-skincare.jpg";
+import makeupImg from "@/assets/cat-makeup.jpg";
+import haircareImg from "@/assets/cat-haircare.jpg";
+import bodycareImg from "@/assets/cat-bodycare.jpg";
+import fragranceImg from "@/assets/cat-fragrance.jpg";
+
+export const categoryImage = (cat: Category): string => {
+  switch (cat) {
+    case "Skincare": return skincareImg;
+    case "Makeup": return makeupImg;
+    case "Haircare": return haircareImg;
+    case "Bodycare": return bodycareImg;
+    case "Fragrance": return fragranceImg;
+  }
+};
