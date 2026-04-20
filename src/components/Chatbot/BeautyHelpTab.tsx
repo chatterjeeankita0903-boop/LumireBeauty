@@ -35,10 +35,10 @@ function localAnswer(input: string): string | null {
 }
 
 async function askWebhook(message: string): Promise<string> {
-  const isAnalysis = message.trim().toLowerCase() === "send analysis";
+  const isAnalysis = message.trim().toLowerCase().includes("analysis");
   const payload = isAnalysis
-    ? { type: "analysis", message: "send analysis" }
-    : { type: "chat", message };
+    ? { action: "send_analysis", message }
+    : { action: "customer_query", query: message };
   try {
     const res = await fetch(N8N_WEBHOOK_URL, {
       method: "POST",
