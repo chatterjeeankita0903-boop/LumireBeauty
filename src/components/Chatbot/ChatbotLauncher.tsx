@@ -67,6 +67,17 @@ export function ChatbotLauncher() {
             <div className="flex-1 overflow-hidden">
               {tab === "help" ? <BeautyHelpTab /> : <ReviewTab />}
             </div>
+
+            {/* Bottom close button */}
+            <div className="border-t border-[var(--champagne)]/40 bg-[var(--ivory)] p-3 flex justify-center">
+              <button
+                onClick={closeChat}
+                className="inline-flex items-center gap-2 px-5 py-2 text-[10px] tracking-[0.25em] uppercase text-[var(--burgundy)] border border-[var(--burgundy)]/30 hover:bg-[var(--burgundy)] hover:text-[var(--ivory)] transition-colors rounded-full"
+                aria-label="Close chat"
+              >
+                <X size={14} /> Close Chat
+              </button>
+            </div>
           </div>
         </div>
       )}

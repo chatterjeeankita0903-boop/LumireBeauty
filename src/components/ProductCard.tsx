@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
-import { type Product, categoryGradient } from "@/data/products";
+import { type Product, categoryImage } from "@/data/products";
 import { useWishlist } from "@/hooks/useWishlist";
 import { formatINR } from "@/lib/format";
 import { StarRating } from "./StarRating";
@@ -15,23 +15,21 @@ export function ProductCard({ product, rating }: Props) {
   const { has, toggle } = useWishlist();
   const wished = has(product.id);
 
-  // Render product initials as visual placeholder
-  const initials = product.name
-    .split(" ")
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join("");
-
   return (
     <Link
       to="/products/$id"
       params={{ id: product.id }}
       className="group block bg-card border border-[var(--champagne)]/40 hover:border-[var(--burgundy)]/30 transition-all hover:shadow-xl hover:shadow-[var(--burgundy)]/5 overflow-hidden"
     >
-      <div className={cn("relative aspect-[4/5] flex items-center justify-center overflow-hidden", categoryGradient(product.category))}>
-        <span className="font-display text-7xl text-white/40 group-hover:scale-110 transition-transform duration-700">
-          {initials}
-        </span>
+      <div className="relative aspect-[4/5] overflow-hidden bg-[var(--champagne)]/20">
+        <img
+          src={categoryImage(product.category)}
+          alt={product.name}
+          loading="lazy"
+          width={1024}
+          height={1280}
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+        />
         <span className="absolute top-4 left-4 px-3 py-1 bg-[var(--ivory)]/90 backdrop-blur text-[10px] tracking-[0.2em] uppercase text-[var(--burgundy)]">
           {product.category}
         </span>

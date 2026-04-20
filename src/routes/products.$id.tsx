@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { Heart, ChevronLeft } from "lucide-react";
-import { getProduct, categoryGradient, type Product } from "@/data/products";
+import { getProduct, categoryImage, type Product } from "@/data/products";
 import { useReviews } from "@/hooks/useReviews";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useChatbot } from "@/components/ChatbotContext";
@@ -49,8 +49,6 @@ function ProductPage() {
   const rating = avgByProduct.get(product.name);
   const wished = has(product.id);
 
-  const initials = product.name.split(" ").slice(0, 2).map((w) => w[0]).join("");
-
   return (
     <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
       <Link to="/" className="inline-flex items-center gap-1 text-xs tracking-widest uppercase text-muted-foreground hover:text-[var(--burgundy)] mb-8">
@@ -58,8 +56,14 @@ function ProductPage() {
       </Link>
 
       <div className="grid md:grid-cols-2 gap-12 items-start">
-        <div className={cn("aspect-square flex items-center justify-center relative overflow-hidden", categoryGradient(product.category))}>
-          <span className="font-display text-9xl text-white/40">{initials}</span>
+        <div className="aspect-square relative overflow-hidden bg-[var(--champagne)]/20">
+          <img
+            src={categoryImage(product.category)}
+            alt={product.name}
+            width={1024}
+            height={1280}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
           <span className="absolute top-5 left-5 px-3 py-1 bg-[var(--ivory)]/90 text-[10px] tracking-[0.2em] uppercase text-[var(--burgundy)]">
             {product.category}
           </span>
