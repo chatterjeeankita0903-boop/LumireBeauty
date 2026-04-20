@@ -35,10 +35,10 @@ function localAnswer(input: string): string | null {
 }
 
 async function askWebhook(message: string): Promise<string> {
-  const isAnalysis = message.trim().toLowerCase() === "send analysis";
+  const isAnalysis = message.trim().toLowerCase().includes("analysis");
   const payload = isAnalysis
-    ? { type: "analysis", message: "send analysis" }
-    : { type: "chat", message };
+    ? { action: "send_analysis", message }
+    : { action: "customer_query", query: message };
   try {
     const res = await fetch(N8N_WEBHOOK_URL, {
       method: "POST",
@@ -84,15 +84,6 @@ export function BeautyHelpTab() {
     setMsgs((m) => [...m, { role: "user", text }]);
     setInput("");
     setTyping(true);
-    const isAnalysis = text.toLowerCase() === "send analysis";
-    const local = isAnalysis ? null : localAnswer(text);
-    if (local) {
-      setTimeout(() => {
-        setMsgs((m) => [...m, { role: "assistant", text: local }]);
-        setTyping(false);
-      }, 600);
-      return;
-    }
     const reply = await askWebhook(text);
     setMsgs((m) => [...m, { role: "assistant", text: reply }]);
     setTyping(false);
