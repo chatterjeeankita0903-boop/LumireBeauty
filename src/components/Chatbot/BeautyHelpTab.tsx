@@ -84,15 +84,6 @@ export function BeautyHelpTab() {
     setMsgs((m) => [...m, { role: "user", text }]);
     setInput("");
     setTyping(true);
-    const isAnalysis = text.toLowerCase() === "send analysis";
-    const local = isAnalysis ? null : localAnswer(text);
-    if (local) {
-      setTimeout(() => {
-        setMsgs((m) => [...m, { role: "assistant", text: local }]);
-        setTyping(false);
-      }, 600);
-      return;
-    }
     const reply = await askWebhook(text);
     setMsgs((m) => [...m, { role: "assistant", text: reply }]);
     setTyping(false);
