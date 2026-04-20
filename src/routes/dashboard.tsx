@@ -39,11 +39,12 @@ function DashboardPage() {
       const res = await fetch(N8N_WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "send_analysis" }),
+        body: JSON.stringify({ type: "analysis", message: "send analysis" }),
       });
       if (!res.ok) throw new Error("bad response");
       toast.success("Report sent to owner ✨");
-    } catch {
+    } catch (err) {
+      console.error("[Dashboard] send analysis error:", err);
       toast.error("Couldn't send report. Please try again.");
     } finally {
       setSendingReport(false);
