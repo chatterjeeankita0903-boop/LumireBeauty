@@ -136,16 +136,18 @@ export function ReviewTab() {
   };
 
   const submit = async () => {
+    if (submitting) return; // prevent duplicate submissions
     setSubmitting(true);
     setError(null);
     const payload = {
+      type: "review",
       action: "append_review",
       reviewId: "LUM-" + Date.now(),
       timestamp: new Date().toISOString(),
       platform: "Lumière Web",
       productCategory: form.productCategory,
       productName: form.productName,
-      rating: form.rating,
+      rating: Number(form.rating),
       reviewTitle: form.reviewTitle,
       reviewText: form.reviewText,
       userHandle: form.userHandle,
@@ -157,11 +159,20 @@ export function ReviewTab() {
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Bad response");
+      let status: string | undefined;
+      try {
+        const data = await res.clone().json();
+        status = Array.isArray(data) ? data[0]?.status : data?.status;
+      } catch {
+        // non-JSON response — treat 2xx as success
+      }
+      if (status === "error") throw new Error("Backend reported error");
       setDone(true);
-      setHistory((h) => [...h, { role: "user", text: "Submit Review" }, { role: "assistant", text: "Thank you! Your review has been submitted and will appear on your dashboard shortly. 🌸" }]);
+      setHistory((h) => [...h, { role: "user", text: "Submit Review" }, { role: "assistant", text: "Thank you! Your review has been submitted. 🌸" }]);
       toast.success("Review submitted ✨");
       setTimeout(restart, 3000);
-    } catch (e) {
+    } catch (err) {
+      console.error("[ReviewTab] submit error:", err);
       setHistory((h) => [...h, { role: "assistant", text: "Oops, something went wrong. Please try again." }]);
       toast.error("Couldn't submit review. Please try again.");
     } finally {

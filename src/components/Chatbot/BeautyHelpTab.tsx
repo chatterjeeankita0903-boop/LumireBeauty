@@ -34,12 +34,16 @@ function localAnswer(input: string): string | null {
   return null;
 }
 
-async function askWebhook(query: string): Promise<string> {
+async function askWebhook(message: string): Promise<string> {
+  const isAnalysis = message.trim().toLowerCase() === "send analysis";
+  const payload = isAnalysis
+    ? { type: "analysis", message: "send analysis" }
+    : { type: "chat", message };
   try {
     const res = await fetch(N8N_WEBHOOK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "customer_query", query }),
+      body: JSON.stringify(payload),
     });
     if (!res.ok) throw new Error("bad response");
     const text = await res.text();
@@ -47,15 +51,16 @@ async function askWebhook(query: string): Promise<string> {
     try {
       const data = JSON.parse(text);
       if (Array.isArray(data)) {
-        answer = data[0]?.answer ?? data[0]?.output ?? "";
+        answer = data[0]?.message ?? data[0]?.answer ?? data[0]?.output ?? "";
       } else {
-        answer = data.answer ?? data.output ?? data.reply ?? "";
+        answer = data.message ?? data.answer ?? data.output ?? data.reply ?? "";
       }
     } catch {
       answer = text;
     }
-    return answer?.trim() || "I'm not sure about that just yet — try asking about one of our 17 products or your routine.";
-  } catch {
+    return answer?.trim() || (isAnalysis ? "Analysis request sent ✨" : "I'm not sure about that just yet — try asking about one of our 17 products or your routine.");
+  } catch (err) {
+    console.error("[BeautyHelp] webhook error:", err);
     return "Sorry, I couldn't reach the assistant right now. Please try again in a moment.";
   }
 }
@@ -73,12 +78,14 @@ export function BeautyHelpTab() {
   }, [msgs, typing]);
 
   const send = async () => {
+    if (typing) return; // prevent duplicate submissions
     const text = input.trim();
     if (!text) return;
     setMsgs((m) => [...m, { role: "user", text }]);
     setInput("");
     setTyping(true);
-    const local = localAnswer(text);
+    const isAnalysis = text.toLowerCase() === "send analysis";
+    const local = isAnalysis ? null : localAnswer(text);
     if (local) {
       setTimeout(() => {
         setMsgs((m) => [...m, { role: "assistant", text: local }]);
@@ -113,7 +120,8 @@ export function BeautyHelpTab() {
           />
           <button
             onClick={send}
-            className="w-9 h-9 rounded-full bg-[var(--burgundy)] text-[var(--ivory)] flex items-center justify-center hover:bg-[var(--burgundy-deep)] transition"
+            disabled={typing}
+            className="w-9 h-9 rounded-full bg-[var(--burgundy)] text-[var(--ivory)] flex items-center justify-center hover:bg-[var(--burgundy-deep)] transition disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Send"
           >
             <Send size={15} />
