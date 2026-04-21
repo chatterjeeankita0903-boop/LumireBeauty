@@ -67,6 +67,47 @@ import haircareImg from "@/assets/cat-haircare.jpg";
 import bodycareImg from "@/assets/cat-bodycare.jpg";
 import fragranceImg from "@/assets/cat-fragrance.jpg";
 
+import glowlabImg from "@/assets/products/glowlab-vitc.jpg";
+import aquaplumpImg from "@/assets/products/aquaplump-ha.jpg";
+import pureglowImg from "@/assets/products/pureglow-toner.jpg";
+import dermaclearImg from "@/assets/products/dermaclear-wash.jpg";
+import retinolrichImg from "@/assets/products/retinolrich-night.jpg";
+import pureclayImg from "@/assets/products/pureclay-mask.jpg";
+import luxelipImg from "@/assets/products/luxelip-matte.jpg";
+import browperfectImg from "@/assets/products/browperfect-pencil.jpg";
+import stayallImg from "@/assets/products/stayall-foundation.jpg";
+import pixelperfectImg from "@/assets/products/pixelperfect-spray.jpg";
+import silkshineImg from "@/assets/products/silkshine-argan.jpg";
+import volumeboostImg from "@/assets/products/volumeboost-dry.jpg";
+import repairritualImg from "@/assets/products/repairritual-mask.jpg";
+import softskinImg from "@/assets/products/softskin-shea.jpg";
+import exfoglowImg from "@/assets/products/exfoglow-coffee.jpg";
+import bloomImg from "@/assets/products/bloom-edp.jpg";
+import cedarmuskImg from "@/assets/products/cedarmusk-cologne.jpg";
+
+const productImages: Record<string, string> = {
+  "glowlab-vitc": glowlabImg,
+  "aquaplump-ha": aquaplumpImg,
+  "pureglow-toner": pureglowImg,
+  "dermaclear-wash": dermaclearImg,
+  "retinolrich-night": retinolrichImg,
+  "pureclay-mask": pureclayImg,
+  "luxelip-matte": luxelipImg,
+  "browperfect-pencil": browperfectImg,
+  "stayall-foundation": stayallImg,
+  "pixelperfect-spray": pixelperfectImg,
+  "silkshine-argan": silkshineImg,
+  "volumeboost-dry": volumeboostImg,
+  "repairritual-mask": repairritualImg,
+  "softskin-shea": softskinImg,
+  "exfoglow-coffee": exfoglowImg,
+  "bloom-edp": bloomImg,
+  "cedarmusk-cologne": cedarmuskImg,
+};
+
+export const productImage = (id: string, cat: Category): string =>
+  productImages[id] ?? categoryImage(cat);
+
 export const categoryImage = (cat: Category): string => {
   switch (cat) {
     case "Skincare": return skincareImg;
