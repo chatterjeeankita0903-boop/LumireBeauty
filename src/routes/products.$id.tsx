@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { Heart, ChevronLeft } from "lucide-react";
-import { getProduct, categoryImage, type Product } from "@/data/products";
+import { getProduct, productImage, type Product } from "@/data/products";
 import { useReviews } from "@/hooks/useReviews";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useChatbot } from "@/components/ChatbotContext";
@@ -58,7 +58,7 @@ function ProductPage() {
       <div className="grid md:grid-cols-2 gap-12 items-start">
         <div className="aspect-square relative overflow-hidden bg-[var(--champagne)]/20">
           <img
-            src={categoryImage(product.category)}
+            src={productImage(product.id, product.category)}
             alt={product.name}
             width={1024}
             height={1280}

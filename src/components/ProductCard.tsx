@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
-import { type Product, categoryImage } from "@/data/products";
+import { type Product, productImage } from "@/data/products";
 import { useWishlist } from "@/hooks/useWishlist";
 import { formatINR } from "@/lib/format";
 import { StarRating } from "./StarRating";
@@ -23,7 +23,7 @@ export function ProductCard({ product, rating }: Props) {
     >
       <div className="relative aspect-[4/5] overflow-hidden bg-[var(--champagne)]/20">
         <img
-          src={categoryImage(product.category)}
+          src={productImage(product.id, product.category)}
           alt={product.name}
           loading="lazy"
           width={1024}
