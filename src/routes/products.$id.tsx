@@ -43,11 +43,15 @@ export const Route = createFileRoute("/products/$id")({
 function ProductPage() {
   const data = Route.useLoaderData() as { product: Product };
   const { product } = data;
-  const { avgByProduct } = useReviews();
+  const { reviews, avgByProduct, loading } = useReviews();
   const { has, toggle } = useWishlist();
   const { openWithReview } = useChatbot();
   const rating = avgByProduct.get(product.name);
   const wished = has(product.id);
+
+  const productReviews = reviews
+    .filter((r) => r.productName === product.name)
+    .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
 
   return (
     <div className="max-w-6xl mx-auto px-6 lg:px-10 py-12">
@@ -102,6 +106,46 @@ function ProductPage() {
               <Heart size={18} className={wished ? "fill-[var(--burgundy)] text-[var(--burgundy)]" : "text-[var(--burgundy)]"} />
             </button>
           </div>
+
+          {/* Reviews section */}
+          <section className="mt-12 pt-8 border-t border-[var(--champagne)]/60">
+            <div className="flex items-baseline justify-between mb-5">
+              <h2 className="font-display text-2xl text-[var(--burgundy-deep)]">Customer Reviews</h2>
+              <span className="text-xs tracking-widest uppercase text-muted-foreground">
+                {productReviews.length} {productReviews.length === 1 ? "review" : "reviews"}
+              </span>
+            </div>
+
+            {loading && productReviews.length === 0 ? (
+              <div className="space-y-3">
+                {[0, 1].map((i) => (
+                  <div key={i} className="h-24 bg-[var(--champagne)]/20 animate-pulse rounded-lg" />
+                ))}
+              </div>
+            ) : productReviews.length === 0 ? (
+              <p className="text-sm text-muted-foreground italic">
+                No reviews yet. Be the first to share your experience.
+              </p>
+            ) : (
+              <ul className="space-y-5">
+                {productReviews.map((r) => (
+                  <li key={r.reviewId} className="border border-[var(--champagne)]/50 bg-card p-4 rounded-lg">
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <div>
+                        <h3 className="font-medium text-foreground leading-tight">{r.reviewTitle}</h3>
+                        <p className="text-[11px] tracking-widest uppercase text-muted-foreground mt-0.5">
+                          {r.userHandle || "Anonymous"}
+                          {r.timestamp && ` · ${new Date(r.timestamp).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}`}
+                        </p>
+                      </div>
+                      <StarRating value={r.rating} size={13} />
+                    </div>
+                    <p className="text-sm text-foreground/80 leading-relaxed">{r.reviewText}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
         </div>
       </div>
     </div>
