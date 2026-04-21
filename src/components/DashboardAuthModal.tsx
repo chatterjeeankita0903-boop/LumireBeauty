@@ -7,7 +7,7 @@ interface Props {
   onClose: () => void;
 }
 
-const PASSWORD = "lumiere2024";
+const PASSWORD = "ankita";
 
 export function DashboardAuthModal({ open, onClose }: Props) {
   const [pw, setPw] = useState("");
