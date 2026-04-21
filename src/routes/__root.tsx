@@ -34,12 +34,19 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Lumière Beauty — Luxury Beauty, Consciously Crafted" },
-      { name: "description", content: "Editorial luxury beauty: skincare, makeup, haircare and fragrance. Vegan, cruelty-free, dermatologist tested." },
+      { name: "description", content: "Luxury beauty: skincare, makeup, haircare and fragrance. Vegan, cruelty-free, dermatologist tested.
+Get to know about our products & share your feedbacks" },
       { name: "author", content: "Lumière Beauty" },
-      { property: "og:title", content: "Lumière Beauty" },
-      { property: "og:description", content: "Luxury beauty, consciously crafted." },
+      { property: "og:title", content: "Lumière Beauty — Luxury Beauty, Consciously Crafted" },
+      { property: "og:description", content: "Luxury beauty: skincare, makeup, haircare and fragrance. Vegan, cruelty-free, dermatologist tested.
+Get to know about our products & share your feedbacks" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Lumière Beauty — Luxury Beauty, Consciously Crafted" },
+      { name: "twitter:description", content: "Luxury beauty: skincare, makeup, haircare and fragrance. Vegan, cruelty-free, dermatologist tested.
+Get to know about our products & share your feedbacks" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/798e37f4-4aeb-4fdf-bd99-7a2b29f0f6ab/id-preview-bb9c0b5a--0d03e422-1c69-4735-b9a8-0f09b0e52d41.lovable.app-1776750486559.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/798e37f4-4aeb-4fdf-bd99-7a2b29f0f6ab/id-preview-bb9c0b5a--0d03e422-1c69-4735-b9a8-0f09b0e52d41.lovable.app-1776750486559.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
