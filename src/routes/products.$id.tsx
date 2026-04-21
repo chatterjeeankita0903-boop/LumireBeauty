@@ -6,7 +6,7 @@ import { useWishlist } from "@/hooks/useWishlist";
 import { useChatbot } from "@/components/ChatbotContext";
 import { StarRating } from "@/components/StarRating";
 import { formatINR } from "@/lib/format";
-import { cn } from "@/lib/utils";
+
 
 export const Route = createFileRoute("/products/$id")({
   loader: ({ params }) => {
