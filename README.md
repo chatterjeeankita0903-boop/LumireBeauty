@@ -2,7 +2,7 @@
 
 > Luxury D2C beauty storefront with a live n8n automation workflow for customer queries.
 
-**Suggested repository name:** `lumiere-beauty-ecommerce-n8n`
+
 
 **Live App:** https://lumiere-ankita.lovable.app
 **Built With:** Lovable · React · n8n · Telegram · Google Sheets · OpenAI GPT-4
@@ -37,11 +37,3 @@ Built to demonstrate a full AI-assisted customer service loop on top of an e-com
 
 This is a hosted, live app with a connected n8n workflow — no installation needed to view the storefront. To reproduce the automation, you'll need your own n8n instance with Telegram, Google Sheets, and OpenAI credentials configured; the workflow itself can be exported from n8n as a `.json` file and included in this repo.
 
-## About the Creator
-
-Built by **Ankita Chatterjee**, Product Owner (Tech & AI) at Axis Bank's Digital Business & Transformations division.
-
-- Email: chatterjeeankita0903@gmail.com
-- LinkedIn: https://www.linkedin.com/in/ankita-chatterjee-81811a147
-- GitHub: https://github.com/chatterjeeankita0903-boop
-- Portfolio: https://ankita-chatterjee-portfolio.lovable.app
